@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <link rel="stylesheet" href="stylesheet.css">
+  </head>
+  <body>
+
+    <div id="loginScreen" class="screen">
+      <div class="input-group mb-3 myInput">
+        <input id="usernameIn" type="text" class="form-control" placeholder="Nazwa Użytkownika" aria-label="Username" aria-describedby="basic-addon1" name="username">
+      </div>
+      <div class="input-group mb-3 myInput">
+        <input id="passwordIn" type="password" class="form-control" placeholder="Hasło" aria-label="Password" aria-describedby="basic-addon1" name="password">
+      </div>
+      <div class="button">
+        <button id="logIn" class="btn btn-success">Zaloguj</button>
+      </div>
+    </div>
+
+
+    <div id="teamsScreen" class="screen">
+      <div width="30vw">
+      <div id="teamsListContainer">
+        <ul id="teamsList" class="list-group">
+        </ul>
+
+
+   </div>
+      <div id="membersContainer">
+        <ul id="membersList" class="list-group">
+        </ul>
+
+      </div>
+    </div>
+      <div id="paymentsContainer">
+        <ul id="paymentsList" class="list-group">
+        </ul>
+      </div>
+      <div id="statsContainer">
+        <button id="addMemberButton" type="button" class="btn btn-primary myButton" data-toggle="modal" data-target="#addMemberModal">
+          Dodaj członka
+        </button>
+        <button id="createTeamButton" type="button"  class="btn btn-primary myButton" data-toggle="modal" data-target="#createTeamModal">
+          Stwórz grupę
+        </button>
+        <button id="addPaymentButton" type="button" class="btn btn-primary myButton" data-toggle="modal" data-target="#addPaymentModal">
+          Dodaj płatność
+        </button>
+        <div id="braces" class="input-group mb-3">
+          <input id="begin" type="text" class="form-control" placeholder="Początek" aria-label="Username" aria-describedby="basic-addon1">
+          <input id="end" type="text" class="form-control" placeholder="Koniec" aria-label="Username" aria-describedby="basic-addon1">
+        </div>
+        <button id="bracesButton" type="button" class="btn btn-primary myButton">
+          Pokaż
+        </button>
+        <button id="clearBracesButton" type="button" class="btn btn-primary myButton">
+          Wyczyść
+        </button>
+        <button id="rozliczButton" type="button" class="btn btn-success myButton">
+          Rozlicz
+        </button>
+      </div>
+    </div>
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="createTeamModal" tabindex="-1" role="dialog" aria-labelledby="createTeamModalModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="createTeamModalModalLabel">Stwórz grupę</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="input-group mb-3">
+              <input id="teamNameIn" type="text" class="form-control" placeholder="Enter team name" aria-label="TeamName" aria-describedby="basic-addon1">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+            <button id="createTeam" type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="addMemberModal" tabindex="-1" role="dialog" aria-labelledby="addMemberModalModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addMemberModalModalLabel">Dodaj członka grupy</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="input-group mb-3">
+              <input id="addMemberIn" type="text" class="form-control" placeholder="Wprowadź nazwę użytkownika" aria-label="username" aria-describedby="basic-addon1">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+            <button id="addMember" type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="addPaymentModal" tabindex="-1" role="dialog" aria-labelledby="addPaymentModalModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addPaymentModalModalLabel">Dodaj płatność</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="input-group mb-3">
+              <input id="paymentNameIn" type="text" class="form-control" placeholder="Nazwa" aria-label="Username" aria-describedby="basic-addon1">
+            </div>
+            <div class="input-group mb-3">
+              <input id="moneyIn" type="text" class="form-control" placeholder="Kwota" aria-label="Username" aria-describedby="basic-addon1">
+            </div>
+            <div class="input-group mb-3">
+              <input id="yearIn" type="text" class="form-control" placeholder="Rok" aria-label="Username" aria-describedby="basic-addon1">
+              <input id="monthIn" type="text" class="form-control" placeholder="Misiąc" aria-label="Username" aria-describedby="basic-addon1">
+              <input id="dayIn" type="text" class="form-control" placeholder="Dzień" aria-label="Username" aria-describedby="basic-addon1">
+            </div>
+            <div id="userCheck">
+              <div class="form-check">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+            <button id="addPayment" type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="rozliczenieModal" tabindex="-1" role="dialog" aria-labelledby="rozliczenieModalModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="rozliczenieModalModalLabel">Rozliczenie</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <ul id="transfersList" class="list-group">
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <script src="script.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+  </body>
+</html>

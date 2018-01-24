@@ -1,0 +1,16 @@
+{
+  "name": "Rozliczator",
+  "version": "0.0.1",
+  "description": "Rozliczenia",
+  "dependencies": {
+    "async-mysql": "^1.0.1",
+    "body-parser": "^1.18.2",
+    "config": "^1.29.1",
+    "cookie-parser": "^1.4.3",
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "mysql": "^2.15.0",
+    "socket.io": "^2.0.4"
+  }
+}
